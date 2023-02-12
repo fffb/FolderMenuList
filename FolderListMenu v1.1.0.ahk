@@ -55,7 +55,7 @@ MenuHandler(ItemName, ItemPos, MyMenu)
 {
 	WinActivate "ahk_id" WinID
 	Send "!d"
-	Sleep 100	;等待获取焦点
+	Sleep 100	;等待获取焦点，如果设为 50 ,在 chrome 中另存为会出现焦点错误
 	addressbar := ControlGetFocus("A")	; 按下 alt+D 之后的焦点为地址栏
 	ControlSetText(ItemName, addressbar, "A")
 	ControlSend("{Enter}", addressbar, "A")
