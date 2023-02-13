@@ -7,7 +7,7 @@
 	global WinID := WinExist("A")
 	ContextMenu := Menu()
 
-	;---------------资源管理器------------------------------------
+	;---------------资源管理器-------------------------
 	For openedwindows in ComObject("shell.Application").windows
 	{
 		This := openedwindows.Document.Folder.Self.Path
@@ -16,7 +16,7 @@
 	}
 	openedwindows := ""	;清空变量
 
-	;---------------Total Commander-------------------------------
+	;---------------Total Commander-------------------
 	if WinExist("ahk_class TTOTAL_CMD")
 	{
 		TCPath := WinGetProcessPath("ahk_class TTOTAL_CMD")
@@ -38,12 +38,13 @@
 		ClipSaved := ""
 	}
 	;--------------常用文件夹-------
-	path1 := "F:\图片\Pics\墙纸\bing"
 	ContextMenu.Add
 	ContextMenu.Add("常用路径", MenuHandler)
 	ContextMenu.Disable("常用路径")
-	ContextMenu.Add(path1, MenuHandler)
-	ContextMenu.SetIcon(path1, "shell32.dll", 44)
+	ContextMenu.Add("F:\图片\Pics\墙纸\bing", MenuHandler)	;如要添加自定义路径，可复制本行和下一行，只修改其中路径即可
+	ContextMenu.SetIcon("F:\图片\Pics\墙纸\bing", "shell32.dll", 44)
+	;ContextMenu.Add("%UserProfile%\", MenuHandler)	;用户文件夹
+	;ContextMenu.SetIcon("%UserProfile%\", "shell32.dll", 44)
 	;------------------------------
 	ContextMenu.Show
 	ContextMenu.Delete
