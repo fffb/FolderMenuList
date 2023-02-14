@@ -55,10 +55,49 @@
 MenuHandler(ItemName, ItemPos, MyMenu)
 {
 	WinActivate "ahk_id" WinID
-	Send "!d"
-	Sleep 100	;等待获取焦点，如果设为 50 ,在 chrome 中另存为会出现焦点错误
-	addressbar := ControlGetFocus("A")	; 按下 alt+D 之后的焦点为地址栏
-	ControlSetText(ItemName, addressbar, "A")
-	ControlSend("{Enter}", addressbar, "A")
-	ControlFocus("Edit1", "A")	;焦点移回到 Edit1
+
+	try
+	{
+		if ControlGetEnabled("ToolbarWindow323", WinID) = 1 or ControlGetEnabled("ToolWindow324", WinID) = 1
+		{
+			Send "!d"
+			Sleep 100	;等待获取焦点，如果设为 50 ,在 chrome 中另存为会出现焦点错误
+			addressbar := ControlGetFocus("A")	; 按下 alt+D 之后的焦点为地址栏
+			ControlSetText(ItemName, addressbar, "A")
+			ControlSend("{Enter}", addressbar, "A")
+			ControlFocus("Edit1", "A")	;焦点移回到 Edit1
+		}
+	}
+	catch TargetError
+	{
+		FolderPath := ItemName
+		OldText := ControlGetText("Edit1", "A")	;读取当前 Edit1 控件中的文件名
+		ControlFocus "Edit1", "A"
+
+		Loop 5
+		{
+			ControlSetText FolderPath, "Edit1", "ahk_id" WinID
+			Sleep(50)
+			CurControlText := ControlGetText("Edit1", "ahk_id" WinID)
+			if (CurControlText = FolderPath)
+				break
+		}
+
+		Sleep 50
+		ControlSend "{Enter}", "Edit1", "A"
+		Sleep 50
+
+		;	Insert original filename
+		If !OldText
+			return
+
+		Loop 5
+		{
+			ControlSetText OldText, "Edit1", "A"
+			Sleep 50
+			CurControlText := ControlGetText("Edit1", "A")
+			if (CurControlText = OldText)
+				break
+		}
+	}
 }
