@@ -87,8 +87,7 @@ MenuHandler(ItemName, ItemPos, MyMenu)
 		ControlSend "{Enter}", "Edit1", "A"
 		Sleep 50
 
-		;	Insert original filename
-		If !OldText
+		If !OldText	;插入原始文件名
 			return
 
 		Loop 5
